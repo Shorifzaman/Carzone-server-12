@@ -2,8 +2,9 @@ const express = require('express')
 const app = express()
 const cors = require('cors'); 
 require('dotenv').config(); // env for
-const { MongoClient } = require('mongodb');
+
 const ObjectId = require('mongodb').ObjectId; //delete for
+const { MongoClient } = require('mongodb');
 
 const port = process.env.PORT || 5000;
 
@@ -13,6 +14,12 @@ app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.l2jwh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+
+
+
+
+
 
 
 client.connect(err => {
@@ -35,6 +42,11 @@ client.connect(err => {
 //GET API (Tours Package)
 app.get('/tours', async (req, res) => {
     const result = await carCollection.find({}).toArray();
+    res.send(result);
+})
+//GET API (Tours Package)
+app.get('/users', async (req, res) => {
+    const result = await usersCollection.find({}).toArray();
     res.send(result);
 })
 
@@ -109,6 +121,18 @@ app.delete('/tours/:id', async (req, res) => {
 })
 
 
+
+// app.delete("/delete/:id", (req, res) => {
+//     carCollection.deleteOne({ _id: ObjectId(req.params.id) })
+//         .then(result => {
+//             console.log(result);
+
+//             res.send(result.deletedCount > 0);
+
+
+//         })
+// })
+
 // =================Update API====================
 
 //Update tours
@@ -125,6 +149,19 @@ app.put('/tours/:id', async (req, res) => {
     const result = await carCollection.updateOne(query, updateDoc, options);
     res.send(result);
 })
+// update
+// app.patch('/update/:id', (req, res) => {
+//     console.log(req.body.price)
+//     carCollection.updateOne({ _id: ObjectId(req.params.id) },
+//         {
+//             $set: { price: req.body.price, }
+//         })
+//         .then(result => {
+//             res.send(result.modifiedCount > 0)
+//         })
+// })
+
+
 
 //bookings updete
 app.put('/bookings/:id', async (req, res) => {
