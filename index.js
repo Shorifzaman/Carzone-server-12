@@ -16,12 +16,6 @@ console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
-
-
-
-
-
-
 client.connect(err => {
 
             const database = client.db('carzon');
@@ -34,21 +28,25 @@ client.connect(err => {
 
 
     // ==============GET API ==================== 
-    //GET API
-    app.get('/', (req, res) => {
-        res.send('Welcome to carzon');
-    })
+//GET API
+app.get('/', (req, res) => {
+    res.send('Welcome to carzon');
+})
 
 //GET API (Tours Package)
 app.get('/tours', async (req, res) => {
     const result = await carCollection.find({}).toArray();
     res.send(result);
 })
-//GET API (Tours Package)
+
+//GET API (users Package)
 app.get('/users', async (req, res) => {
     const result = await usersCollection.find({}).toArray();
     res.send(result);
 })
+
+
+
 
 //GET API (Bookings)
 app.get('/bookings', async (req, res) => {
