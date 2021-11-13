@@ -111,53 +111,54 @@ app.delete('/bookings/:id', async (req, res) => {
     res.send(result);
 })
 //DELETE API(Bookings)
-app.delete('/tours/:id', async (req, res) => {
-    const id = req.params.id;
-    const query = { _id: ObjectId(id) };
-    const result = await carCollection.deleteOne(query);
-    res.send(result);
-})
-
-
-
-// app.delete("/delete/:id", (req, res) => {
-//     carCollection.deleteOne({ _id: ObjectId(req.params.id) })
-//         .then(result => {
-//             console.log(result);
-
-//             res.send(result.deletedCount > 0);
-
-
-//         })
+// app.delete('/tours/:id', async (req, res) => {
+//     const id = req.params.id;
+//     const query = { _id: ObjectId(id) };
+//     const result = await carCollection.deleteOne(query);
+//     res.send(result);
 // })
+
+
+
+app.delete("/tours/:id", (req, res) => {
+    carCollection.deleteOne({ _id: ObjectId(req.params.id) })
+        .then(result => {
+            console.log(result, " delated car one ");
+
+            res.send(result.deletedCount > 0);
+
+
+        })
+})
 
 // =================Update API====================
 
 //Update tours
-app.put('/tours/:id', async (req, res) => {
-    const id = req.params.id;
-    const newStatus = req.body;
-    const query = { _id: ObjectId(id) };
-    const options = { upsert: true };
-    const updateDoc = {
-        $set: {
-            data: newStatus.newData
-        }
-    }
-    const result = await carCollection.updateOne(query, updateDoc, options);
-    res.send(result);
-})
-// update
-// app.patch('/update/:id', (req, res) => {
-//     console.log(req.body.price)
-//     carCollection.updateOne({ _id: ObjectId(req.params.id) },
-//         {
-//             $set: { price: req.body.price, }
-//         })
-//         .then(result => {
-//             res.send(result.modifiedCount > 0)
-//         })
+// app.put('/tours/:id', async (req, res) => {
+//     const id = req.params.id;
+//     const newStatus = req.body;
+//     const query = { _id: ObjectId(id) };
+//     const options = { upsert: true };
+//     const updateDoc = {
+//         $set: {
+//             data: newStatus.newData
+//         }
+//     }
+//     const result = await carCollection.updateOne(query, updateDoc, options);
+//     res.send(result);
 // })
+
+// update
+app.patch('/tours/:id', (req, res) => {
+    console.log(req.body.price)
+    carCollection.updateOne({ _id: ObjectId(req.params.id) },
+        {
+            $set: { price: req.body.price,  name: req.body.name,}
+        })
+        .then(result => {
+            res.send(result.modifiedCount > 0)
+        })
+})
 
 
 
@@ -179,7 +180,7 @@ app.put('/bookings/:id', async (req, res) => {
 
 // =================Admin API====================
 
-//insertOne admin OK
+//insertOne user OK
 app.post('/users', async (req, res) => {
     const user = req.body;
     const result = await usersCollection.insertOne(user);
